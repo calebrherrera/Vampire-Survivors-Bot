@@ -18,11 +18,6 @@ class Bot():
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
         time.sleep(0.1)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
-
-    def pressKey(self, key):
-        keyboard.press_and_release(key)
-        time.sleep(0.000001)
-    
     
     def moveUp(self):
         print("Moving Up")
@@ -54,33 +49,6 @@ class Bot():
         pyautogui.keyDown('w')
         pyautogui.keyDown('a')
 
-
-    # def move(self, direction):
-        
-    #     if (direction == "w"):
-    #         print("Moving Up")
-    #         pyautogui.keyDown('w')
-    #         self.lastKey = 'w'
-            
-    #     elif (direction == "a"):
-    #         print("Moving Left")
-    #         pyautogui.keyDown('a')
-    #         self.lastKey = 'a'
-        
-    #     elif (direction == "s"):
-    #         print("Moving Down")
-            
-            
-    #     elif (direction == "d"):
-    #         print("Moving Right")
-    #         pyautogui.keyDown('d')
-    #         self.lastKey = 'd'
-            
-    #     else:
-    #         print("Unknown direction")
-            
-        
-
     def walkInSquare(self,t):
         self.moveUp()
         time.sleep(t)
@@ -101,4 +69,6 @@ if __name__ == '__main__':
     while (keyboard.is_pressed('q') == False):
         # bot.walkInCircle(0.00001)
         bot.moveUpLeft()
+    
+    print("Bot died or user exited")
 
