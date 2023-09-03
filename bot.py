@@ -69,45 +69,60 @@ class Bot():
     def isDead(self):
         if (pyautogui.pixel(835, 745) == (209, 43, 12)):
             print("Bot died.")
+            self.click(835, 745)
             return True
+        elif (pyautogui.pixel(845, 925) == (62, 179, 90)):
+            print("Reviving")
+            self.click(845, 925)
         return False
     
     def tryRevive(self):
         self.click(835, 745)
     
     def checkRevive(self):
-        if pyautogui.locateOnScreen('images/revive.png', grayscale=True, confidence=0.8) != None:
-            button = pyautogui.locateCenterOnScreen('images/revive.png', grayscale=True)
+        if pyautogui.locateOnScreen('buttons/revive.png', grayscale=True, confidence=0.8) != None:
+            button = pyautogui.locateCenterOnScreen('buttons/revive.png', grayscale=True)
             print("Reviving")
             self.click(button.x, button.y)   
     
     def upgradeAvailable(self):
         if (pyautogui.pixel(935, 325) == (133, 133, 131)):
-            print("Upgrade available")
+            print("Upgrade available.")
             return True
         return False
     
     def upgradeWeapon(self):
         self.click(935, 325)
-        
+        print("Upgrade chosen.")
+    
+    def chestFound(self):
+        if pyautogui.locateOnScreen('items/chest.png', grayscale=True, confidence=0.8) != None:
+            print("Chest found!!!")
+            return True
+        return False
+    
+
 if __name__ == '__main__':
     time.sleep(2)
     
     bot = Bot()
     
     while (keyboard.is_pressed('q') == False):
-        # bot.walkInCircle(0.00001)
+        
         if bot.upgradeAvailable():
             bot.upgradeWeapon()
         elif bot.isDead():
-            bot.tryRevive()
-            
-        bot.checkRevive()
-        time.sleep(1)
+            break
+
+        bot.chestFound()
+        
+        # bot.walkInCircle(0.00001)
         # bot.moveUpLeft()
         # time.sleep(1)
         # bot.moveDownRight()
         # time.sleep(1)
+        time.sleep(0.001)
+
     
-    print("Bot died or user exited")
+    print("Exiting.")
 
