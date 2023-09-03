@@ -7,10 +7,23 @@ import random
 import win32api, win32con
 
 class Bot():
+    # Track last direciton chosen
     lastKey = '';
+    # List of items to prioritize when upgrading
+    # Ideally 6 'weapons' and 6 'relics' ordered from most to least important
+    pick = ['whip', 'hollowheart'
+            , 'duplicator', 'attractorb'
+            , 'armor', 'garlic'
+            , 'pummarola', 'runetracer']
+    # List of weapons to 'banish' if no upgrades are available
+    ban = ['pentagram', 'clover'
+           , 'skullomaniac', 'firewand'
+           , 'spellbinder', 'cross'
+           , 'lightningring', 'santawater'
+           , 'kingbible', 'knife']
+    
     def __init__(self):
         print("Starting bot...")
-        lastKey = ''
     
     def click(self,x,y):
         win32api.SetCursorPos((x,y))
@@ -19,59 +32,10 @@ class Bot():
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     
     def move(self, direction, t):
-        print("Pressing " + direction)
+        # print("Pressing " + direction)
         pyautogui.keyUp(self.lastKey)
         pyautogui.keyDown(direction)
         self.lastKey = direction
-        # time.sleep(t)ssddadd
-    
-    def moveUp(self):
-        print("Moving Up")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('w')
-        self.lastKey = 'w'
-
-    def moveDown(self):
-        print("Moving Down")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('s')
-        self.lastKey = 's'
-        
-    def moveLeft(self):
-        print("Moving Left")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('a')
-        self.lastKey = 'a'
-
-    def moveRight(self):
-        print("Moving Right")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('d')
-        self.lastKey = 'd'
-        
-    def moveUpLeft(self):
-        print("Moving Up Left")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('w')
-        pyautogui.keyDown('a')
-        self.lastKey = ['w','a']
-        
-    def moveDownRight(self):
-        print("Moving Up Left")
-        pyautogui.keyUp(self.lastKey)
-        pyautogui.keyDown('s')
-        pyautogui.keyDown('d')
-        self.lastKey = ['s','d']
-
-    def walkInSquare(self,t):
-        self.moveUp()
-        time.sleep(t)
-        self.moveRight()
-        time.sleep(t)
-        self.moveDown()
-        time.sleep(t)
-        self.moveLeft()
-        time.sleep(t)
     
     def isDead(self):
         if (pyautogui.pixel(835, 745) == (209, 43, 12)):
@@ -93,15 +57,69 @@ class Bot():
             self.click(button.x, button.y)   
     
     def upgradeAvailable(self):
-        if (pyautogui.pixel(935, 325) == (133, 133, 131)):
-            print("Upgrade available.")
+        # if (pyautogui.pixel(935, 325) == (133, 133, 131)):
+        if pyautogui.locateOnScreen('buttons/levelup.png', grayscale=True, confidence=0.8) != None:
+            # print("Upgrade available.")
             return True
         return False
     
     def upgradeWeapon(self):
-        self.click(935, 325)
-        print("Upgrade chosen.")
+        time.sleep(0.5)
+        for item in self.pick :
+            path = "items\\" + item + ".png"
+            # print("Looking for " + item)
+            point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.90, region=(615, 100, 1270 - 615, 900 - 100))
+            if point != None:
+                try:
+                    self.click(point.x, point.y)
+                    print("Upgraded " + item)
+                    return
+                except:
+                    print("Couldn't click " + item)
+            # else:
+            #     print("Don't see " + item)
+        
+        self.reroll()
+        self.banish()
+        self.skip()
+        # print("Upgrade chosen.")
     
+    def reroll(self):
+        point = pyautogui.locateCenterOnScreen("buttons/reroll.png", grayscale=False, confidence=0.95)
+        if point != None:
+            self.click(point.x, point.y)
+            time.sleep(0.5)
+            self.upgradeWeapon()
+        return False
+    
+    def banish(self):
+        ban_button = pyautogui.locateCenterOnScreen("buttons/banish.png", grayscale=False, confidence=0.95)
+        if ban_button != None:
+            for item in self.ban:
+                path = "items\\" + item + ".png"
+                point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.90, region=(615, 100, 1270 - 615, 900 - 100))
+                if point != None:
+                    try:
+                        self.click(ban_button.x, ban_button.y)
+                        time.sleep(0.5)
+                        self.click(point.x, point.y)
+                        print("Banished " + item)
+                        return True
+                    except:
+                        print("Couldn't click " + item)
+                # else:
+                #     print("Don't see " + item)
+        return False
+    
+    def skip(self):
+        skip_button = pyautogui.locateCenterOnScreen("buttons/skip.png", grayscale=False, confidence=0.95)
+        if skip_button != None:
+            try:
+                self.click(skip_button.x, skip_button.y)
+                print("Skipped")
+            except:
+                print("Couldn't click skip")
+            
     def chestFound(self):
         if pyautogui.locateOnScreen('items/chest.png', grayscale=True, confidence=0.6) != None:
             print("Chest found!!!")
@@ -129,8 +147,13 @@ if __name__ == '__main__':
             continue
         else:
             bot.move(directions[random.randint(0,3)], random.randrange(0,max_walk))
-        
+        # bot.upgradeWeapon()
         time.sleep(0.0001)
+
+    # region=(615, 210, 1270, 900)
+    # pyautogui.moveTo(615, 210)
+    # pyautogui.moveTo(1270, 900)
+    # pyautogui.moveTo(615+1270, 210+900)
 
     print("Exiting.")
 
