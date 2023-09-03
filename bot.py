@@ -150,10 +150,5 @@ if __name__ == '__main__':
         # bot.upgradeWeapon()
         time.sleep(0.0001)
 
-    # region=(615, 210, 1270, 900)
-    # pyautogui.moveTo(615, 210)
-    # pyautogui.moveTo(1270, 900)
-    # pyautogui.moveTo(615+1270, 210+900)
-
     print("Exiting.")
 
