@@ -1,6 +1,6 @@
 # Vampire-Survivors-Bot
  
-This project aims to automate actions to play the game Vampire Survivors
+This project aims to automate actions to play the game [Vampire Survivors](https://store.steampowered.com/app/1794680/Vampire_Survivors/)
 
 Skills used in this project include:
 - Python Objects
