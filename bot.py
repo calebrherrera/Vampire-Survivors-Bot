@@ -18,6 +18,13 @@ class Bot():
         time.sleep(0.1)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     
+    def move(self, direction, t):
+        print("Pressing " + direction)
+        pyautogui.keyUp(self.lastKey)
+        pyautogui.keyDown(direction)
+        self.lastKey = direction
+        # time.sleep(t)ssddadd
+    
     def moveUp(self):
         print("Moving Up")
         pyautogui.keyUp(self.lastKey)
@@ -104,25 +111,26 @@ class Bot():
 
 if __name__ == '__main__':
     time.sleep(2)
+    directions = ['w', 'a', 's', 'd']
+    max_walk = 1
     
     bot = Bot()
     
     while (keyboard.is_pressed('q') == False):
         
         if bot.upgradeAvailable():
+            # Check if upgrade available
             bot.upgradeWeapon()
         elif bot.isDead():
+            # Check if character died
             break
-
-        bot.chestFound()
+        elif bot.chestFound():
+            # Check if chest is on screen
+            continue
+        else:
+            bot.move(directions[random.randint(0,3)], random.randrange(0,max_walk))
         
-        # bot.walkInCircle(0.00001)
-        # bot.moveUpLeft()
-        # time.sleep(1)
-        # bot.moveDownRight()
-        # time.sleep(1)
-        time.sleep(0.001)
+        time.sleep(0.0001)
 
-    
     print("Exiting.")
 
