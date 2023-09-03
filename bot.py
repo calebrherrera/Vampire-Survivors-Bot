@@ -2,7 +2,6 @@
 import time
 import pyautogui
 import keyboard
-import numpy as np
 import random
 import win32api, win32con
 
@@ -58,7 +57,6 @@ class Bot():
             self.click(button.x, button.y)   
     
     def upgradeAvailable(self):
-        # if (pyautogui.pixel(935, 325) == (133, 133, 131)):
         if pyautogui.locateOnScreen('buttons/levelup.png', grayscale=True, confidence=0.8) != None:
             # print("Upgrade available.")
             return True
@@ -83,7 +81,6 @@ class Bot():
         self.reroll()
         self.banish()
         self.skip()
-        # print("Upgrade chosen.")
     
     def reroll(self):
         point = pyautogui.locateCenterOnScreen("buttons/reroll.png", grayscale=False, confidence=0.95)
@@ -131,7 +128,7 @@ class Bot():
 if __name__ == '__main__':
     time.sleep(2)
     directions = ['w', 'a', 's', 'd']
-    max_walk = 1
+    walk = 1
     
     bot = Bot()
     
@@ -147,7 +144,7 @@ if __name__ == '__main__':
             # Check if chest is on screen
             continue
         else:
-            bot.move(directions[random.randint(0,3)], random.randrange(0,max_walk))
+            bot.move(directions[random.randint(0,3)], walk)
         # bot.upgradeWeapon()
         time.sleep(0.0001)
 
