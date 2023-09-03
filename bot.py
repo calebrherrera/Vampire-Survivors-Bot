@@ -103,7 +103,7 @@ class Bot():
         print("Upgrade chosen.")
     
     def chestFound(self):
-        if pyautogui.locateOnScreen('items/chest.png', grayscale=True, confidence=0.8) != None:
+        if pyautogui.locateOnScreen('items/chest.png', grayscale=True, confidence=0.6) != None:
             print("Chest found!!!")
             return True
         return False
