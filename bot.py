@@ -14,7 +14,8 @@ class Bot():
     pick = ['whip', 'hollowheart'
             , 'duplicator', 'attractorb'
             , 'armor', 'garlic'
-            , 'pummarola', 'runetracer']
+            , 'pummarola', 'runetracer'
+            , 'crown']
     # List of weapons to 'banish' if no upgrades are available
     ban = ['pentagram', 'clover'
            , 'skullomaniac', 'firewand'
@@ -68,7 +69,7 @@ class Bot():
         for item in self.pick :
             path = "items\\" + item + ".png"
             # print("Looking for " + item)
-            point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.90, region=(615, 100, 1270 - 615, 900 - 100))
+            point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.91, region=(615, 100, 1270 - 615, 900 - 100))
             if point != None:
                 try:
                     self.click(point.x, point.y)
