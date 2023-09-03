@@ -2,13 +2,12 @@
 import time
 import pyautogui
 import keyboard
-# import numpy as np
-# import random
+import numpy as np
+import random
 import win32api, win32con
 
 class Bot():
     lastKey = '';
-    
     def __init__(self):
         print("Starting bot...")
         lastKey = ''
@@ -48,6 +47,14 @@ class Bot():
         pyautogui.keyUp(self.lastKey)
         pyautogui.keyDown('w')
         pyautogui.keyDown('a')
+        self.lastKey = ['w','a']
+        
+    def moveDownRight(self):
+        print("Moving Up Left")
+        pyautogui.keyUp(self.lastKey)
+        pyautogui.keyDown('s')
+        pyautogui.keyDown('d')
+        self.lastKey = ['s','d']
 
     def walkInSquare(self,t):
         self.moveUp()
@@ -59,16 +66,26 @@ class Bot():
         self.moveLeft()
         time.sleep(t)
     
+    def checkRevive(self):
+        if pyautogui.locateOnScreen('images/revive.png', grayscale=True, confidence=0.8) != None:
+            button = pyautogui.locateCenterOnScreen('images/revive.png', grayscale=True)
+            print("Reviving")
+            self.click(button.x, button.y)   
     
 
 if __name__ == '__main__':
-    time.sleep(7.5)
+    time.sleep(2)
     
     bot = Bot()
     
     while (keyboard.is_pressed('q') == False):
         # bot.walkInCircle(0.00001)
-        bot.moveUpLeft()
+        bot.checkRevive()
+        time.sleep(1)
+        # bot.moveUpLeft()
+        # time.sleep(1)
+        # bot.moveDownRight()
+        # time.sleep(1)
     
     print("Bot died or user exited")
 
