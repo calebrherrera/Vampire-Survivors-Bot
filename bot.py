@@ -66,6 +66,15 @@ class Bot():
         self.moveLeft()
         time.sleep(t)
     
+    def isDead(self):
+        if (pyautogui.pixel(835, 745) == (209, 43, 12)):
+            print("Bot died.")
+            return True
+        return False
+    
+    def tryRevive(self):
+        self.click(835, 745)
+    
     def checkRevive(self):
         if pyautogui.locateOnScreen('images/revive.png', grayscale=True, confidence=0.8) != None:
             button = pyautogui.locateCenterOnScreen('images/revive.png', grayscale=True)
@@ -77,7 +86,9 @@ class Bot():
             print("Upgrade available")
             return True
         return False
-        
+    
+    def upgradeWeapon(self):
+        self.click(935, 325)
         
 if __name__ == '__main__':
     time.sleep(2)
@@ -87,8 +98,10 @@ if __name__ == '__main__':
     while (keyboard.is_pressed('q') == False):
         # bot.walkInCircle(0.00001)
         if bot.upgradeAvailable():
-            # bot.upgrade()
-    
+            bot.upgradeWeapon()
+        elif bot.isDead():
+            bot.tryRevive()
+            
         bot.checkRevive()
         time.sleep(1)
         # bot.moveUpLeft()
