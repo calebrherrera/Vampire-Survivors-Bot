@@ -72,7 +72,13 @@ class Bot():
             print("Reviving")
             self.click(button.x, button.y)   
     
-
+    def upgradeAvailable(self):
+        if (pyautogui.pixel(935, 325) == (133, 133, 131)):
+            print("Upgrade available")
+            return True
+        return False
+        
+        
 if __name__ == '__main__':
     time.sleep(2)
     
@@ -80,6 +86,9 @@ if __name__ == '__main__':
     
     while (keyboard.is_pressed('q') == False):
         # bot.walkInCircle(0.00001)
+        if bot.upgradeAvailable():
+            # bot.upgrade()
+    
         bot.checkRevive()
         time.sleep(1)
         # bot.moveUpLeft()
