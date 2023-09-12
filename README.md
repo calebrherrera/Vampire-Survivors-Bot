@@ -20,3 +20,12 @@ Dependencies:
 - pyautogui
 - random
 - pywin32
+
+If you'd like to try bot.py yourself, make sure you have python installed on your system. Then install the necessary modules using:
+```
+pip install pyautogui keyboard pywin32 opencv-python
+```
+Then once you've started Vampire Survivors and entered a game you can run the bot from the Vampire-Survivors-Bot directory using:
+```
+python bot.py
+```
