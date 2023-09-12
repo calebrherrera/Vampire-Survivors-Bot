@@ -25,3 +25,7 @@ Then once you've started Vampire Survivors and entered a game you can run the bo
 ```
 python bot.py
 ```
+
+Users can press "q" at any time to terminate the bot
+
+For best results make sure the game is running at a resolution of ***1920x1080*** and in ***Fullscreen Window*** mode
