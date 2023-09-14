@@ -63,11 +63,11 @@ class Bot():
         return False
     
     def upgradeWeapon(self):
-        time.sleep(0.5)
+        time.sleep(0.75)
         for item in self.pick :
             path = "items\\" + item + ".png"
             # print("Looking for " + item)
-            point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.91, region=(615, 100, 1270 - 615, 900 - 100))
+            point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.91, region=(615, 100, 675, 900))
             if point != None:
                 try:
                     self.click(point.x, point.y)
@@ -78,16 +78,17 @@ class Bot():
             # else:
             #     print("Don't see " + item)
         
-        self.reroll()
-        self.banish()
-        self.skip()
+        if self.reroll() or self.banish() or self.skip():
+            return
     
     def reroll(self):
         point = pyautogui.locateCenterOnScreen("buttons/reroll.png", grayscale=False, confidence=0.95)
         if point != None:
             self.click(point.x, point.y)
             time.sleep(0.5)
+            print("Rerolled")
             self.upgradeWeapon()
+            return True
         return False
     
     def banish(self):
@@ -95,7 +96,7 @@ class Bot():
         if ban_button != None:
             for item in self.ban:
                 path = "items\\" + item + ".png"
-                point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.90, region=(615, 100, 1270 - 615, 900 - 100))
+                point = pyautogui.locateCenterOnScreen(path, grayscale=False, confidence=0.90, region=(615, 100, 675, 900))
                 if point != None:
                     try:
                         self.click(ban_button.x, ban_button.y)
@@ -115,8 +116,10 @@ class Bot():
             try:
                 self.click(skip_button.x, skip_button.y)
                 print("Skipped")
+                return True
             except:
                 print("Couldn't click skip")
+        return False
             
     def chestFound(self):
         if pyautogui.locateOnScreen('items/chest.png', grayscale=True, confidence=0.6) != None:
